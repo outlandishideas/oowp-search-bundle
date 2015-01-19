@@ -1,0 +1,20 @@
+services:
+
+    outlandish_faceted.form.type.post_type:
+        class: Outlandish\FacetedBundle\Form\Type\PostTypeType
+        arguments: [@outlandish_oowp.post_manager]
+        tags:
+            - { name: form.type, alias: post_type }
+
+    outlandish_faceted.form.type.post_to_post:
+        class: Outlandish\FacetedBundle\Form\Type\PostToPostType
+        arguments: [@outlandish_oowp.post_manager]
+        tags:
+            - { name: form.type, alias: post_to_post }
+
+# Example of the WPQueryType as a service.
+#    outlandish_faceted.form.type.wp_query:
+#        class: Outlandish\FacetedBundle\Form\Type\WPQueryType
+#        arguments: [@outlandish_oowp.post_manager, @outlandish_oowp.query_manager]
+#        tags:
+#            - { name: form.type, alias: wp_query }
