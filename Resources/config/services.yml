@@ -12,6 +12,16 @@ services:
         tags:
             - { name: form.type, alias: post_to_post }
 
+    outlandish_faceted.form.type.order:
+        class: Outlandish\FacetedBundle\Form\Type\OrderType
+        tags:
+            - { name: form.type, alias: order }
+
+    outlandish_faceted.form.type.order_by:
+        class: Outlandish\FacetedBundle\Form\Type\OrderByType
+        tags:
+            - { name: form.type, alias: order_by }
+
 # Example of the WPQueryType as a service.
 #    outlandish_faceted.form.type.wp_query:
 #        class: Outlandish\FacetedBundle\Form\Type\WPQueryType
