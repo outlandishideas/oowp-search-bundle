@@ -6,7 +6,7 @@
  * Time: 02:00
  */
 
-namespace Outlandish\FacetedBundle\Form\DataTransformer;
+namespace Outlandish\OowpSearchBundle\Form\DataTransformer;
 
 use Outlandish\OowpBundle\Manager\PostManager;
 use Symfony\Component\Form\DataTransformerInterface;

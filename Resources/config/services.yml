@@ -1,30 +1,30 @@
 services:
 
-    outlandish_faceted.form.type.post_type:
-        class: Outlandish\FacetedBundle\Form\Type\PostTypeType
+    outlandish_oowp_search.form.type.post_type:
+        class: Outlandish\OowpSearchBundle\Form\Type\PostTypeType
         arguments: [@outlandish_oowp.post_manager]
         tags:
             - { name: form.type, alias: post_type }
 
-    outlandish_faceted.form.type.post_to_post:
-        class: Outlandish\FacetedBundle\Form\Type\PostToPostType
+    outlandish_oowp_search.form.type.post_to_post:
+        class: Outlandish\OowpSearchBundle\Form\Type\PostToPostType
         arguments: [@outlandish_oowp.post_manager]
         tags:
             - { name: form.type, alias: post_to_post }
 
-    outlandish_faceted.form.type.order:
-        class: Outlandish\FacetedBundle\Form\Type\OrderType
+    outlandish_oowp_search.form.type.order:
+        class: Outlandish\OowpSearchBundle\Form\Type\OrderType
         tags:
             - { name: form.type, alias: order }
 
-    outlandish_faceted.form.type.order_by:
-        class: Outlandish\FacetedBundle\Form\Type\OrderByType
+    outlandish_oowp_search.form.type.order_by:
+        class: Outlandish\OowpSearchBundle\Form\Type\OrderByType
         tags:
             - { name: form.type, alias: order_by }
 
 # Example of the WPQueryType as a service.
-#    outlandish_faceted.form.type.wp_query:
-#        class: Outlandish\FacetedBundle\Form\Type\WPQueryType
+#    outlandish_oowp_search.form.type.wp_query:
+#        class: Outlandish\OowpSearchBundle\Form\Type\WPQueryType
 #        arguments: [@outlandish_oowp.post_manager, @outlandish_oowp.query_manager]
 #        tags:
 #            - { name: form.type, alias: wp_query }

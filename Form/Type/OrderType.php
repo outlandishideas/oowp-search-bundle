@@ -6,7 +6,7 @@
  * Time: 19:53
  */
 
-namespace Outlandish\FacetedBundle\Form\Type;
+namespace Outlandish\OowpSearchBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

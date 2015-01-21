@@ -6,7 +6,7 @@
  * Time: 22:45
  */
 
-namespace Outlandish\FacetedBundle\Form\Type;
+namespace Outlandish\OowpSearchBundle\Form\Type;
 
 
 use Outlandish\OowpBundle\Manager\PostManager;
