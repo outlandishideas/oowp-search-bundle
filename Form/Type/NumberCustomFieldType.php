@@ -15,6 +15,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class NumberCustomFieldType extends AbstractCustomFieldType {
+
+    protected $type = 'NUMERIC';
+
     /**
      * Returns the name of this type.
      *

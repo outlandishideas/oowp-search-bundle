@@ -16,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 abstract class AbstractCustomFieldType extends AbstractType {
 
+    protected $type = 'CHAR';
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
@@ -26,6 +27,7 @@ abstract class AbstractCustomFieldType extends AbstractType {
         $resolver->setDefaults(array(
             'mapped' => false,
             'compare' => '=',
+            'type' => $this->type
         ));
     }
 

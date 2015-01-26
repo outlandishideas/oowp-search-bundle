@@ -95,12 +95,13 @@ class WPQueryType extends AbstractType {
             if($value){
                 $metaKey = $field->getConfig()->getOption('meta_key');
                 $compare = $field->getConfig()->getOption('compare');
+                $type = $field->getConfig()->getOption('type');
 
                 $metaQuery[] = array(
                     'key' => $metaKey,
                     'value' => $value,
                     'compare' => $compare,
-                    'type' => 'CHAR'
+                    'type' => $type
                 );
             }
         }
