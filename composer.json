@@ -2,7 +2,7 @@
   "name": "outlandish/oowp-search-bundle",
   "require": {
     "symfony/framework-bundle": "~2.3",
-    "outlandish/oowp-bundle": "dev"
+    "outlandish/oowp-bundle": "dev-master"
   },
   "autoload": {
     "psr-0": {
