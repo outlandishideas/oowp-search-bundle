@@ -8,7 +8,7 @@ services:
 
     outlandish_oowp_search.form.type.post_to_post:
         class: Outlandish\OowpSearchBundle\Form\Type\PostToPostType
-        arguments: [@outlandish_oowp.post_manager]
+        arguments: [@outlandish_oowp.post_manager, @outlandish_oowp.query_manager]
         tags:
             - { name: form.type, alias: post_to_post }
 
@@ -22,9 +22,14 @@ services:
         tags:
             - { name: form.type, alias: order_by }
 
+    outlandish_oowp_search.form.type.custom_field:
+        class: Outlandish\OowpSearchBundle\Form\Type\NumberCustomFieldType
+        tags:
+            - { name: form.type, alias: number_custom_field }
+
 # Example of the WPQueryType as a service.
-#    outlandish_oowp_search.form.type.wp_query:
-#        class: Outlandish\OowpSearchBundle\Form\Type\WPQueryType
-#        arguments: [@outlandish_oowp.post_manager, @outlandish_oowp.query_manager]
-#        tags:
-#            - { name: form.type, alias: wp_query }
+    outlandish_oowp_search.form.type.wp_query:
+        class: Outlandish\OowpSearchBundle\Form\Type\WPQueryType
+        arguments: [@outlandish_oowp.post_manager, @outlandish_oowp.query_manager]
+        tags:
+            - { name: form.type, alias: wp_query }

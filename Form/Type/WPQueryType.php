@@ -12,12 +12,14 @@ namespace Outlandish\OowpSearchBundle\Form\Type;
 use Outlandish\OowpBundle\Manager\PostManager;
 use Outlandish\RoutemasterBundle\Manager\QueryManager;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
-abstract class WPQueryType extends AbstractType {
+class WPQueryType extends AbstractType {
 
     /**
      * @var PostManager
@@ -37,33 +39,88 @@ abstract class WPQueryType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder
+            ->add('order', 'order')
+            ->add('order_by', 'order_by')
+            ->add('post_type', 'post_type')
+            ->add('blog', 'post_to_post', array(
+                'post_type' => 'blog',
+                'required'    => false,
+                'choice_list' => new ObjectChoiceList($this->queryManager->query(array('post_type' => 'blog'))->posts, 'post_title')
+            ))
+            ->add('number', 'number_custom_field', array('meta_key' => 'number'))
+            ->add('save', 'submit');
+
         $builder->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) {
             $this->handlePostToPostTypes($event);
             $this->handleOrderByType($event);
             $this->handleOrderType($event);
+            $this->handleCustomFieldType($event);
         });
     }
 
     protected function handleOrderType(FormEvent $event)
     {
+        $data = $event->getData();
+
         /** @var Form[] $fields */
         $fields = array_filter($event->getForm()->all(), function($field){
-            return $this->filterFieldsByType($field, 'OrderType');
+            return $field instanceof Form ? $field->getConfig()->getType()->getInnerType() instanceof OrderType : false ;
         });
 
         foreach($fields as $field){
             $event->setData(array_merge(
-                $event->getData(),
+                $data,
                 array('order' => $field->getData())
             ));
         }
     }
 
-    protected function handleOrderByType(FormEvent $event)
+    /**
+     * @param FormEvent $event
+     */
+    protected function handleCustomFieldType(FormEvent $event)
     {
+        $data = $event->getData();
+
         /** @var Form[] $fields */
         $fields = array_filter($event->getForm()->all(), function($field){
-            return $this->filterFieldsByType($field, 'OrderByType');
+            return $field instanceof Form ? $field->getConfig()->getType()->getInnerType() instanceof AbstractCustomFieldType : false ;
+        });
+
+        $metaQuery = array();
+
+        foreach($fields as $field){
+            $value = $field->getData();
+            if($value){
+                $metaKey = $field->getConfig()->getOption('meta_key');
+                $compare = $field->getConfig()->getOption('compare');
+
+                $metaQuery[] = array(
+                    'key' => $metaKey,
+                    'value' => $value,
+                    'compare' => $compare,
+                    'type' => 'CHAR'
+                );
+            }
+        }
+
+        if(!empty($metaQuery)){
+            $event->setData(array_merge(
+                $data,
+                array('meta_query' => $metaQuery)
+            ));
+        }
+
+    }
+
+    protected function handleOrderByType(FormEvent $event)
+    {
+        $data = $event->getData();
+
+        /** @var Form[] $fields */
+        $fields = array_filter($event->getForm()->all(), function($field){
+            return $field instanceof Form ? $field->getConfig()->getType()->getInnerType() instanceof OrderByType : false ;
         });
 
         foreach($fields as $field){
@@ -73,12 +130,12 @@ abstract class WPQueryType extends AbstractType {
             //else set order_by to meta_value, and meta_key to the $value
             if(in_array($value, OrderByType::getProtectedValues())){
                 $event->setData(array_merge(
-                    $event->getData(),
+                    $data,
                     array('order_by' => $value)
                 ));
             } else {
                 $event->setData(array_merge(
-                    $event->getData(),
+                    $data,
                     array(
                         'order_by' => 'meta_value',
                         'meta_key' => $value
@@ -86,16 +143,6 @@ abstract class WPQueryType extends AbstractType {
                 ));
             }
         }
-    }
-
-    /**
-     * @param Form $field
-     * @param $class
-     * @return bool
-     */
-    protected function filterFieldsByType(Form $field, $class)
-    {
-        return $field->getConfig()->getType()->getInnerType() instanceof $class;
     }
 
     protected function handlePostToPostTypes(FormEvent $event)
@@ -107,7 +154,7 @@ abstract class WPQueryType extends AbstractType {
 
         /** @var Form[] $fields */
         $fields = array_filter($event->getForm()->all(), function($field){
-            return $this->filterFieldsByType($field, 'OrderByType');
+            return $field instanceof Form ? $field->getConfig()->getType()->getInnerType() instanceof PostToPostType : false ;
         });
 
         foreach($fields as $field){

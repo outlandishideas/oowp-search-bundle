@@ -14,21 +14,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class OrderType extends AbstractType {
-
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(array(
-            'mapped' => false,
-            'required' => true,
-            'choices' => array(
-                'DESC' => 'Descending',
-                'ASC' => 'Ascending',
-            )
-        ));
-    }
-
+class NumberCustomFieldType extends AbstractCustomFieldType {
     /**
      * Returns the name of this type.
      *
@@ -36,12 +22,13 @@ class OrderType extends AbstractType {
      */
     public function getName()
     {
-        return 'order';
+        return 'number_custom_field';
     }
 
     public function getParent()
     {
-        return 'choice';
+        return 'number';
     }
+
 
 }

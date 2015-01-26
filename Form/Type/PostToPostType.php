@@ -8,11 +8,12 @@
 
 namespace Outlandish\OowpSearchBundle\Form\Type;
 
+use Outlandish\OowpBundle\Manager\QueryManager;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Outlandish\OowpBundle\Manager\PostManager;
-use Outlandish\FacetedBundle\Form\DataTransformer\ConnectedItemsToPostsTransformer;
 
 class PostToPostType extends AbstractType {
 
@@ -23,26 +24,34 @@ class PostToPostType extends AbstractType {
 
     /**
      * @param PostManager $postManager
+     * @param QueryManager $queryManager
      */
-    function __construct(PostManager $postManager)
+    function __construct(PostManager $postManager, QueryManager $queryManager)
     {
         $this->postManager = $postManager;
+        $this->queryManager = $queryManager;
     }
 
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
 
+        $choiceList = function(Options $options){
+            $args = array(
+                'post_type' => $options['post_type'],
+                'orderby' => 'title'
+            );
+
+            return new ObjectChoiceList($this->$queryManager->query($args)->posts, 'post_title');
+        };
+
         $resolver->setRequired(array('post_type'));
-        $resolver->setDefaults(array('mapped' => false));
-    }
-
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $transformer = new ConnectedItemsToPostsTransformer($this->postManager, $options['post_type']);
-        $builder->addModelTransformer($transformer);
-
-
+        $resolver->setDefaults(array(
+            'mapped' => false,
+            'multiple' => true,
+            'required' => false,
+            'choice_list' => $choiceList
+        ));
     }
 
     /**

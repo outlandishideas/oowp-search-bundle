@@ -36,7 +36,11 @@ class PostTypeType extends AbstractType {
         });
         $resolver->setDefaults(array(
             'choices' => $defaultPosts,
-            'multiple' => true
+            'multiple' => false,
+            'expanded' => true,
+            'required' => false,
+            'empty_data' => array_keys($defaultPosts),
+            'empty_value' => 'All'
         ));
     }
 
