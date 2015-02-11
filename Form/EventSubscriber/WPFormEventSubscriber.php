@@ -27,29 +27,23 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
     {
         $data = $event->getData();
 
-        /** @var Form[] $orderFields */
         $orderFields = $this->getOrderFields($event);
         $this->addOrderFieldsToData($event, $orderFields, $data);
 
-        /** @var Form[] $orderByFields */
         $orderByFields = $this->getOrderByFields($event);
         $this->addOrderByFieldsToData($orderByFields, $data);
 
-        $data = $event->getData();
-
-        /** @var Form[] $fields */
         $postToPostFields = $this->getPostToPostFields($event);
         $this->addPostToPostFieldsToData($postToPostFields, $data);
 
         $fields = $this->getCustomFieldFields($event);
-
         $this->addCustomFieldFieldsToData($event, $fields, $data);
 
     }
 
     /**
      * @param FormEvent $event
-     * @return array
+     * @return Form[]
      */
     private function getOrderFields(FormEvent $event)
     {
@@ -71,7 +65,7 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
 
     /**
      * @param FormEvent $event
-     * @return array
+     * @return Form[]
      */
     private function getOrderByFields(FormEvent $event)
     {
@@ -109,7 +103,7 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
 
     /**
      * @param FormEvent $event
-     * @return array
+     * @return Form[]
      */
     private function getPostToPostFields(FormEvent $event)
     {
@@ -239,7 +233,7 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
 
     /**
      * @param FormEvent $event
-     * @return array
+     * @return Form[]
      */
     private function getCustomFieldFields(FormEvent $event)
     {
