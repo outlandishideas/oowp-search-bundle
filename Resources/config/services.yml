@@ -28,8 +28,8 @@ services:
             - { name: form.type, alias: number_custom_field }
 
 # Example of the WPQueryType as a service.
-    outlandish_oowp_search.form.type.wp_query:
-        class: Outlandish\OowpSearchBundle\Form\Type\WPQueryType
-        arguments: [@outlandish_oowp.post_manager, @outlandish_oowp.query_manager]
-        tags:
-            - { name: form.type, alias: wp_query }
+#    outlandish_oowp_search.form.type.wp_query:
+#        class: Outlandish\OowpSearchBundle\Form\Type\WPQueryType
+#        arguments: [@outlandish_oowp.post_manager, @outlandish_oowp.query_manager]
+#        tags:
+#            - { name: form.type, alias: wp_query }
