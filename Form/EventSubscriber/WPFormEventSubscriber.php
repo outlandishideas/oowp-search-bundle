@@ -8,11 +8,14 @@
 
 namespace Outlandish\OowpSearchBundle\Form\EventSubscriber;
 
+use Outlandish\OowpSearchBundle\Form\Type\AbstractCustomFieldType;
 use Outlandish\OowpSearchBundle\Form\Type\OrderByType;
 use Outlandish\OowpSearchBundle\Form\Type\OrderType;
+use Outlandish\OowpSearchBundle\Form\Type\PostToPostType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class WPFormEventSubscriber implements EventSubscriberInterface {
 
@@ -28,7 +31,7 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
         $data = $event->getData();
 
         $orderFields = $this->getOrderFields($event);
-        $this->addOrderFieldsToData($event, $orderFields, $data);
+        $this->addOrderFieldsToData($orderFields, $data);
 
         $orderByFields = $this->getOrderByFields($event);
         $this->addOrderByFieldsToData($orderByFields, $data);
@@ -37,7 +40,9 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
         $this->addPostToPostFieldsToData($postToPostFields, $data);
 
         $fields = $this->getCustomFieldFields($event);
-        $this->addCustomFieldFieldsToData($event, $fields, $data);
+        $this->addCustomFieldFieldsToData($fields, $data);
+
+        $event->setData($data);
 
     }
 
@@ -186,7 +191,8 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
     private function updateConnectedTypes(array &$data, Form $field, array &$connectedTypes)
     {
         $childPostType = $this->getPostTypeOfField($field);
-        foreach ($data['post_type'] as $postType) {
+        $postTypes = is_array($data['post_type']) ? $data['post_type'] : [$data['post_type']];
+        foreach ($postTypes as $postType) {
             $connectedTypes[] = $this->generateConnectedType($postType, $childPostType);
         }
     }
