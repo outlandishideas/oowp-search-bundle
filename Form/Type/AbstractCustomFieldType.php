@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Matthew
- * Date: 17/01/2015
- * Time: 19:53
- */
 
 namespace Outlandish\OowpSearchBundle\Form\Type;
 
@@ -14,10 +8,19 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-abstract class AbstractCustomFieldType extends AbstractType {
+/**
+ * Class AbstractCustomFieldType
+ * @package Outlandish\OowpSearchBundle\Form\Type
+ */
+abstract class AbstractCustomFieldType extends AbstractType
+{
 
     protected $type = 'CHAR';
+    protected $compare = "=";
 
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setRequired(array(
@@ -26,7 +29,7 @@ abstract class AbstractCustomFieldType extends AbstractType {
 
         $resolver->setDefaults(array(
             'mapped' => false,
-            'compare' => '=',
+            'compare' => $this->compare,
             'type' => $this->type
         ));
     }

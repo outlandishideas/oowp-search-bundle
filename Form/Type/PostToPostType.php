@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Matthew
- * Date: 17/01/2015
- * Time: 19:53
- */
 
 namespace Outlandish\OowpSearchBundle\Form\Type;
 
@@ -15,27 +9,37 @@ use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Outlandish\OowpBundle\Manager\PostManager;
 
-class PostToPostType extends AbstractType {
-
+/**
+ * Class PostToPostType
+ * @package Outlandish\OowpSearchBundle\Form\Type
+ */
+class PostToPostType extends AbstractType
+{
     /**
      * @var PostManager
      */
     private $postManager;
 
     /**
-     * @param PostManager $postManager
+     * @param PostManager  $postManager
      * @param QueryManager $queryManager
      */
-    function __construct(PostManager $postManager, QueryManager $queryManager)
+    public function __construct(PostManager $postManager, QueryManager $queryManager)
     {
         $this->postManager = $postManager;
         $this->queryManager = $queryManager;
     }
 
-
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
 
+        /**
+         * @param Options $options
+         * @return ObjectChoiceList
+         */
         $choiceList = function(Options $options){
             $args = array(
                 'post_type' => $options['post_type'],
@@ -64,6 +68,9 @@ class PostToPostType extends AbstractType {
         return 'post_to_post';
     }
 
+    /**
+     * @return string
+     */
     public function getParent()
     {
         return 'choice';

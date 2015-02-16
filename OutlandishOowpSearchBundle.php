@@ -1,11 +1,14 @@
 <?php
 
-
 namespace Outlandish\OowpSearchBundle;
-
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class OutlandishOowpSearchBundle extends Bundle {
+/**
+ * Class OutlandishOowpSearchBundle
+ * @package Outlandish\OowpSearchBundle
+ */
+class OutlandishOowpSearchBundle extends Bundle
+{
 
 }

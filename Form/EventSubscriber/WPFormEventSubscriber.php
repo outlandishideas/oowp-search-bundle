@@ -1,11 +1,7 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: outlander
- * Date: 11/02/2015
- * Time: 15:33
+ *
  */
-
 namespace Outlandish\OowpSearchBundle\Form\EventSubscriber;
 
 use Outlandish\OowpSearchBundle\Form\Type\AbstractCustomFieldType;
@@ -17,8 +13,16 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class WPFormEventSubscriber implements EventSubscriberInterface {
+/**
+ * Class WPFormEventSubscriber
+ * @package Outlandish\OowpSearchBundle\Form\EventSubscriber
+ */
+class WPFormEventSubscriber implements EventSubscriberInterface
+{
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return array(
@@ -26,9 +30,15 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
         );
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function onSubmit(FormEvent $event)
     {
         $data = $event->getData();
+
+        $postTypeFields = $this->getPostTypeFields($event);
+        $this->addPostTypeFieldsToData($postTypeFields, $data);
 
         $orderFields = $this->getOrderFields($event);
         $this->addOrderFieldsToData($orderFields, $data);
@@ -47,17 +57,19 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
     }
 
     /**
+     * filter the the fields of the form for OrderType
+     *
      * @param FormEvent $event
      * @return Form[]
      */
     private function getOrderFields(FormEvent $event)
     {
-        return array_filter($event->getForm()->all(), function ($field) {
-            return $field instanceof Form ? $field->getConfig()->getType()->getInnerType() instanceof OrderType : false;
-        });
+        return $this->getFieldsByType($event, 'Outlandish\OowpSearchBundle\Form\Type\OrderType');
     }
 
     /**
+     * Parse the Order Field Type and add it's data to the forms data
+     *
      * @param Form[] $fields
      * @param array $data
      */
@@ -74,9 +86,8 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
      */
     private function getOrderByFields(FormEvent $event)
     {
-        return array_filter($event->getForm()->all(), function ($field) {
-            return $field instanceof Form ? $field->getConfig()->getType()->getInnerType() instanceof OrderByType : false;
-        });
+        return $this->getFieldsByType($event, 'Outlandish\OowpSearchBundle\Form\Type\OrderByType');
+
     }
 
     /**
@@ -130,8 +141,9 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
         foreach ($fields as $field) {
             $items = $field->getNormData();
 
-            if ($this->nothingSelected($items))
+            if ($this->nothingSelected($items)) {
                 continue;
+            }
 
             $this->ensureArray($items);
 
@@ -158,8 +170,9 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
      */
     private function ensureArray(&$items)
     {
-        if (!is_array($items))
+        if (!is_array($items)) {
             $items = array($items);
+        }
     }
 
     /**
@@ -207,6 +220,7 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
         $types = [$postType, $childPostType];
         sort($types);
         $connectedType = implode('_', $types);
+
         return $connectedType;
     }
 
@@ -303,6 +317,36 @@ class WPFormEventSubscriber implements EventSubscriberInterface {
     {
         if (!empty($metaQuery)) {
             $data = array_merge($data, ['meta_query' => $metaQuery]);
+        }
+    }
+
+    private function getPostTypeFields($event)
+    {
+        return $this->getFieldsByType($event, 'Outlandish\OowpSearchBundle\Form\Type\PostTypeType');
+    }
+
+    private function getFieldsByType($event, $class)
+    {
+        return array_filter($event->getForm()->all(), function ($field) use ($class) {
+            return $field instanceof Form ? $field->getConfig()->getType()->getInnerType() instanceof $class : false;
+        });
+    }
+
+    /**
+     * @param Form[] $postTypeFields
+     * @param array $data
+     */
+    private function addPostTypeFieldsToData(array $postTypeFields, array &$data)
+    {
+        /** @var Form[] $postTypeFields */
+        foreach ($postTypeFields as $field) {
+            $value = $field->getData();
+
+            if ($value == 'all' || $value === null) {
+                $value = array_keys($field->getConfig()->getOptions()['choices']);
+            }
+
+            $data = array_merge($data, ['post_type' => $value]);
         }
     }
 

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Matthew
- * Date: 17/01/2015
- * Time: 19:53
- */
 
 namespace Outlandish\OowpSearchBundle\Form\Type;
 
@@ -14,10 +8,16 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class OrderByType extends AbstractType {
+/**
+ * Class OrderByType
+ * @package Outlandish\OowpSearchBundle\Form\Type
+ */
+class OrderByType extends AbstractType
+{
 
     /**
      * An array of a protected values for WP_Query
+     *
      * If the chosen value does not appear here, it is assumed to be a metakey
      *
      * @var array
@@ -38,6 +38,9 @@ class OrderByType extends AbstractType {
         'post__in'
     );
 
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -59,11 +62,17 @@ class OrderByType extends AbstractType {
         return 'order_by';
     }
 
+    /**
+     * @return string
+     */
     public function getParent()
     {
         return 'choice';
     }
 
+    /**
+     * @return array
+     */
     public static function getProtectedValues()
     {
         return static::$protectedValues;

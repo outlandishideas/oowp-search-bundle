@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Matthew
- * Date: 18/01/2015
- * Time: 22:45
- */
 
 namespace Outlandish\OowpSearchBundle\Form\Type;
-
 
 use Outlandish\OowpBundle\Manager\PostManager;
 use Outlandish\OowpSearchBundle\Form\EventSubscriber\WPFormEventSubscriber;
@@ -20,7 +13,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 
-abstract class WPQueryType extends AbstractType {
+/**
+ * Class WPQueryType
+ * @package Outlandish\OowpSearchBundle\Form\Type
+ */
+abstract class WPQueryType extends AbstractType
+{
 
     /**
      * @var PostManager
@@ -32,12 +30,20 @@ abstract class WPQueryType extends AbstractType {
      */
     protected $queryManager;
 
+    /**
+     * @param PostManager  $postManager
+     * @param QueryManager $queryManager
+     */
     public function __construct(PostManager $postManager, QueryManager $queryManager)
     {
         $this->postManager = $postManager;
         $this->queryManager = $queryManager;
     }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 //        $builder
@@ -55,11 +61,17 @@ abstract class WPQueryType extends AbstractType {
         $builder->addEventSubscriber(new WPFormEventSubscriber());
     }
 
+    /**
+     * @return string
+     */
     public function getParent()
     {
         return 'form';
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'wp_query';

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Matthew
- * Date: 17/01/2015
- * Time: 19:53
- */
 
 namespace Outlandish\OowpSearchBundle\Form\Type;
 
@@ -14,9 +8,15 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class OrderType extends AbstractType {
-
-
+/**
+ * Class OrderType
+ * @package Outlandish\OowpSearchBundle\Form\Type
+ */
+class OrderType extends AbstractType
+{
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -39,6 +39,9 @@ class OrderType extends AbstractType {
         return 'order';
     }
 
+    /**
+     * @return string
+     */
     public function getParent()
     {
         return 'choice';
