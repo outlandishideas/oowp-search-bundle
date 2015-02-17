@@ -3,11 +3,11 @@
 namespace Outlandish\OowpSearchBundle\Form\Type;
 
 use Outlandish\OowpBundle\Manager\QueryManager;
+use Outlandish\OowpBundle\Manager\PostManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\ChoiceList\ObjectChoiceList;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Outlandish\OowpBundle\Manager\PostManager;
 
 /**
  * Class PostToPostType
@@ -16,17 +16,15 @@ use Outlandish\OowpBundle\Manager\PostManager;
 class PostToPostType extends AbstractType
 {
     /**
-     * @var PostManager
+     * @var QueryManager
      */
-    private $postManager;
+    private $queryManager;
 
     /**
-     * @param PostManager  $postManager
      * @param QueryManager $queryManager
      */
-    public function __construct(PostManager $postManager, QueryManager $queryManager)
+    public function __construct(QueryManager $queryManager)
     {
-        $this->postManager = $postManager;
         $this->queryManager = $queryManager;
     }
 
