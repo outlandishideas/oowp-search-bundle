@@ -244,8 +244,8 @@ class WPFormEventSubscriber implements EventSubscriberInterface
     {
         if ($this->hasConnectedPosts($connectedTypes, $connectedItems)) {
             $postToPost = [
-                'connection_type' => array_unique($connectedTypes),
-                'connection_items' => array_unique($connectedItems)
+                'connected_type' => array_unique($connectedTypes),
+                'connected_items' => array_unique($connectedItems)
             ];
             $data = array_merge($data, $postToPost);
         }
