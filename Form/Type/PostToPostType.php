@@ -44,7 +44,7 @@ class PostToPostType extends AbstractType
                 'orderby' => 'title'
             );
 
-            return new ObjectChoiceList($this->$queryManager->query($args)->posts, 'post_title');
+            return new ObjectChoiceList($this->queryManager->query($args)->posts, 'post_title');
         };
 
         $resolver->setRequired(array('post_type'));
