@@ -41,7 +41,8 @@ class PostToPostType extends AbstractType
         $choiceList = function(Options $options){
             $args = array(
                 'post_type' => $options['post_type'],
-                'orderby' => 'title'
+                'orderby' => 'title',
+                'order' => 'ASC'
             );
 
             return new ObjectChoiceList($this->queryManager->query($args)->posts, 'post_title');
